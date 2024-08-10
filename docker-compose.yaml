@@ -19,8 +19,6 @@ services:
       - ./certbot/www/:/var/www/certbot/:rw
   mongo:
     image: mongo:latest
-    ports:
-      - 27017:27017
     restart: always
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_INITDB_ROOT_USERNAME}
