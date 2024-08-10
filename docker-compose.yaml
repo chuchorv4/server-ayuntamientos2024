@@ -53,6 +53,7 @@ services:
       - NEXTAUTH_URL=${NEXTAUTH_URL}
     networks:
       - internal_network
+      - external_network
 
 networks:
   internal_network:
