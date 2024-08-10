@@ -11,7 +11,8 @@ services:
       - ./certbot/conf/:/etc/letsencrypt/:ro
       - ./nginx/www/:/var/www/:rw
     networks:
-      - internal
+      - internal_network
+      - external_network
   certbot:
     image: certbot/certbot:latest
     volumes:
@@ -29,7 +30,7 @@ services:
       - ./mongo/data:/data/db
       - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
     networks:
-      - internal
+      - internal_network
   api:
     build: https://github.com/chuchorv4/api-ayuntamientos2024.git
     restart: always
@@ -40,7 +41,23 @@ services:
       - MONGODB_PORT=27017
       - MONGODB_DB=ayuntamientos
     networks:
-      - internal
+      - internal_network
+  admin:
+    build: https://github.com/chuchorv4/admin-ayuntamientos2024.git
+    restart: always
+    environment:
+      - AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}
+      - AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}
+      - AUTH0_ISSUER=${AUTH0_ISSUER}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+    networks:
+      - internal_network
+
 networks:
-  internal:
+  internal_network:
     driver: bridge
+    internal: true
+  external_network:
+    driver: bridge
+    internal: false
