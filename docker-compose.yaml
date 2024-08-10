@@ -30,7 +30,17 @@ services:
       - ./mongo-init/:/docker-entrypoint-initdb.d/:ro
     networks:
       - internal
-
+  api:
+    build: https://github.com/chuchorv4/api-ayuntamientos2024.git
+    restart: always
+    environment:
+      - MONGODB_USER=${MONGODB_PROJECT_USERNAME}
+      - MONGODB_PASS=${MONGODB_PROJECT_PASSWORD}
+      - MONGODB_HOST=mongo
+      - MONGODB_PORT=27017
+      - MONGODB_DB=ayuntamientos
+    networks:
+      - internal
 networks:
   internal:
     driver: bridge
