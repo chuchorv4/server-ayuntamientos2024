@@ -42,6 +42,8 @@ services:
       - MONGODB_DB=ayuntamientos
     networks:
       - internal_network
+    volumes:
+      - ./public:/app/public/:rw
   admin:
     build: https://github.com/chuchorv4/admin-ayuntamientos2024.git
     restart: always
@@ -54,6 +56,8 @@ services:
     networks:
       - internal_network
       - external_network
+    volumes:
+      - ./public:/app/public/:ro
 
 networks:
   internal_network:
